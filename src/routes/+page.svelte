@@ -78,12 +78,12 @@
 <!-- Export Dialog -->
 
 <Dialog.Root open={exportDialogOpen} onOpenChange={() => (exportDialogOpen = !exportDialogOpen)}>
-	<Dialog.Content class="max-w-[90%]">
+	<Dialog.Content class="max-w-[75%]">
 		<Dialog.Header>
 			<Dialog.Title>Export</Dialog.Title>
 		</Dialog.Header>
 		<div class="flex flex-col 2xl:flex-row">
-			<img bind:this={exportImg} src="" class="rounded-md max-w-[640px]" alt="Exported img" />
+			<img bind:this={exportImg} src="" class="rounded-md max-w-[640px] max-h-[360px]" alt="Exported img" />
 			<div class="flex grow flex-col justify-center">
 				<div class="flex flex-row items-center gap-4 p-4">
 					Width:
