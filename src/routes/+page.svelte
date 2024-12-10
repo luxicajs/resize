@@ -132,7 +132,7 @@
 		</Menubar.Menu>
 	</Menubar.Root>
 	<div class="h-full w-screen grow">
-		<img bind:this={element} alt="Editor" src="/image.jpg" />
+		<img bind:this={element} alt="Editor" src="/sample.webp" />
 	</div>
 </div>
 
