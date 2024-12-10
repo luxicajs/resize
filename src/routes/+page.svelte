@@ -143,6 +143,6 @@
 	}
 
     .cropper-bg {
-        background-image: none;
+        background-image: none !important;
     }
 </style>
