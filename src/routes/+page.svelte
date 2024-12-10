@@ -141,4 +141,8 @@
 		display: block;
 		max-width: 100%;
 	}
+
+    .cropper-bg {
+        background-image: none;
+    }
 </style>
