@@ -83,7 +83,7 @@
 			<Dialog.Title>Export</Dialog.Title>
 		</Dialog.Header>
 		<div class="flex flex-col 2xl:flex-row">
-			<img bind:this={exportImg} src="" class="rounded-md" alt="Exported img" />
+			<img bind:this={exportImg} src="" class="rounded-md max-w-[640px]" alt="Exported img" />
 			<div class="flex grow flex-col justify-center">
 				<div class="flex flex-row items-center gap-4 p-4">
 					Width:
@@ -131,7 +131,7 @@
 			</Menubar.Content>
 		</Menubar.Menu>
 	</Menubar.Root>
-	<div class="h-full w-screen grow">
+	<div class="w-screen grow h-[90%]">
 		<img bind:this={element} alt="Editor" src="/sample.webp" />
 	</div>
 </div>
