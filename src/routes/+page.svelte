@@ -94,14 +94,6 @@
 			'8': '0.125x'
 		}
 	};
-
-	function debounce(cb, t: number) {
-		let timer;
-		return (...args) => {
-			clearTimeout(timer);
-			timer = setTimeout(() => cb(...args), t);
-		};
-	}
 </script>
 
 <!-- Export Dialog -->
