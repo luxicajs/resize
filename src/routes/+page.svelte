@@ -43,6 +43,7 @@
 	let exportH = $state(0); // Export height
 	let exportQ = $state(100); // Export quality
 	let exportF = $state('image/png'); // Export format
+	let exportR = $state('1');
 
 	let exportImg: HTMLImageElement;
 	let blob: Blob;
@@ -52,8 +53,8 @@
 		cropperData = c;
 		c.toBlob((res) => {
 			if (!res) return alert('error');
-			exportW = c.width;
-			exportH = c.height;
+			exportW = Math.round(c.width / Number(exportR));
+			exportH = Math.round(c.height / Number(exportR));
 			exportQ = 100;
 			blob = res;
 			exportDialogOpen = true;
@@ -63,8 +64,8 @@
 	$effect(() => {
 		if (exportDialogOpen === true && blob) {
 			new Compressor(blob, {
-				width: exportW,
-				height: exportH,
+				width: Math.round(exportW / Number(exportR)),
+				height: Math.round(exportH / Number(exportR)),
 				quality: exportQ / 100,
 				mimeType: exportF,
 				success(result) {
@@ -73,6 +74,22 @@
 			});
 		}
 	});
+
+	const selectNames = {
+		format: {
+			'image/png': 'PNG (Uncompressed)',
+			'image/jpeg': 'JPG (Compressed)',
+			'image/webp': 'WEBP (Quality & Compression Balance)'
+		},
+		scale: {
+			'0.25': '4x',
+			'0.5': '2x',
+			'1': '1x',
+			'2': '0.5x',
+			'4': '0.25x',
+			'8': '0.125x'
+		}
+	};
 </script>
 
 <!-- Export Dialog -->
@@ -83,7 +100,19 @@
 			<Dialog.Title>Export</Dialog.Title>
 		</Dialog.Header>
 		<div class="flex flex-col 2xl:flex-row">
-			<img bind:this={exportImg} src="" class="rounded-md max-w-[640px] max-h-[360px]" alt="Exported img" />
+			<div class="flex flex-col">
+				<img
+					bind:this={exportImg}
+					src=""
+					class="max-h-[360px] max-w-[640px] rounded-md"
+					alt="Exported img"
+				/>
+				<span
+					>Width: {Math.round(exportW / Number(exportR))}, Height: {Math.round(
+						exportH / Number(exportR)
+					)}</span
+				>
+			</div>
 			<div class="flex grow flex-col justify-center">
 				<div class="flex flex-row items-center gap-4 p-4">
 					Width:
@@ -104,11 +133,26 @@
 				<div class="flex flex-row items-center gap-4 p-4">
 					Format:
 					<Select.Root type="single" bind:value={exportF}>
-						<Select.Trigger>{exportF}</Select.Trigger>
+						<Select.Trigger>{selectNames.format[exportF]}</Select.Trigger>
 						<Select.Content>
-							<Select.Item value="image/png">image/png</Select.Item>
-							<Select.Item value="image/jpeg">image/jpeg</Select.Item>
-							<Select.Item value="image/webp">image/webp</Select.Item>
+							<Select.Item value="image/png">{selectNames.format['image/png']}</Select.Item>
+							<Select.Item value="image/jpeg">{selectNames.format['image/jpeg']}</Select.Item>
+							<Select.Item value="image/webp">{selectNames.format['image/webp']}</Select.Item>
+						</Select.Content>
+					</Select.Root>
+				</div>
+
+				<div class="flex flex-row items-center gap-4 p-4">
+					Scale:
+					<Select.Root type="single" bind:value={exportR}>
+						<Select.Trigger>{selectNames.scale[exportR]}</Select.Trigger>
+						<Select.Content>
+							<Select.Item value="0.25">4x</Select.Item>
+							<Select.Item value="0.5">2x</Select.Item>
+							<Select.Item value="1">1x</Select.Item>
+							<Select.Item value="2">0.5x</Select.Item>
+							<Select.Item value="4">0.25x</Select.Item>
+							<Select.Item value="8">0.125x</Select.Item>
 						</Select.Content>
 					</Select.Root>
 				</div>
@@ -131,7 +175,7 @@
 			</Menubar.Content>
 		</Menubar.Menu>
 	</Menubar.Root>
-	<div class="w-screen grow h-[90%]">
+	<div class="h-[90%] w-screen grow">
 		<img bind:this={element} alt="Editor" src="/sample.webp" />
 	</div>
 </div>
