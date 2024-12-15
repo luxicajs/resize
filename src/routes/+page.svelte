@@ -10,6 +10,7 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Compressor from 'compressorjs';
+	import prettyBytes from 'pretty-bytes';
 
 	let element: HTMLImageElement;
 	let cropper: Cropper;
@@ -44,6 +45,7 @@
 	let exportQ = $state(100); // Export quality
 	let exportF = $state('image/png'); // Export format
 	let exportR = $state('1');
+	let exportSize = $state(0);
 
 	let exportImg: HTMLImageElement;
 	let blob: Blob;
@@ -70,6 +72,8 @@
 				mimeType: exportF,
 				success(result) {
 					exportImg.src = window.URL.createObjectURL(result);
+
+					exportSize = result.size;
 				}
 			});
 		}
@@ -90,6 +94,14 @@
 			'8': '0.125x'
 		}
 	};
+
+	function debounce(cb, t: number) {
+		let timer;
+		return (...args) => {
+			clearTimeout(timer);
+			timer = setTimeout(() => cb(...args), t);
+		};
+	}
 </script>
 
 <!-- Export Dialog -->
@@ -110,7 +122,7 @@
 				<span
 					>Width: {Math.round(exportW / Number(exportR))}, Height: {Math.round(
 						exportH / Number(exportR)
-					)}</span
+					)}, Size: {prettyBytes(exportSize)}</span
 				>
 			</div>
 			<div class="flex grow flex-col justify-center">
@@ -126,7 +138,11 @@
 
 				<div class="flex flex-row items-center gap-4 p-4">
 					Quality:
-					<Slider value={[exportQ]} max={100} onValueChange={(v) => (exportQ = v[0])} />
+					<Slider
+						value={[exportQ]}
+						max={100}
+						onValueChange={(v) => exportQ = v[0]}
+					/>
 					<Input type="number" bind:value={exportQ} />
 				</div>
 

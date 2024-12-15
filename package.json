@@ -39,6 +39,7 @@
 	},
 	"dependencies": {
 		"compressorjs": "^1.2.1",
-		"cropperjs": "^1.6.2"
+		"cropperjs": "^1.6.2",
+		"pretty-bytes": "^6.1.1"
 	}
 }
